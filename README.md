@@ -20,7 +20,7 @@ git clone https://github.com/brenonsc/BlogPessoal.git
 
 4. Execute o projeto.
 
-5. Acesse a aplicação em seu navegador (geralmente em http://localhost:5000).
+5. Acesse a aplicação em seu navegador (http://localhost:5000).
 
 A partir deste ponto, você pode usar a aplicação BlogPessoal para criar e gerenciar postagens pessoais.
 
