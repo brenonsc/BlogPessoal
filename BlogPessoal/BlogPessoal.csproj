@@ -22,5 +22,6 @@
 
   <ItemGroup>
     <None Remove="Controllers\" />
+    <None Remove=".gitignore" />
   </ItemGroup>
 </Project>
