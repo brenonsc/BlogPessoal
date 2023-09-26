@@ -10,6 +10,6 @@ public class TemaValidator : AbstractValidator<Tema>
         RuleFor(t => t.Descricao)
             .NotEmpty()
             .MinimumLength(3)
-            .MaximumLength(1000);
+            .MaximumLength(255);
     }
 }

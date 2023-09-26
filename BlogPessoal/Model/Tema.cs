@@ -10,6 +10,6 @@ public class Tema
     public long Id { get; set; }
     
     [Column(TypeName = "varchar")]
-    [StringLength(1000)]
+    [StringLength(255)]
     public string Descricao { get; set; } = string.Empty;
 }
