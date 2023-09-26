@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogPessoal.Controllers;
 
+[Route("~/temas")]
+[ApiController]
 public class TemaController : ControllerBase
 {
     private readonly ITemaService _temaService;
@@ -16,13 +18,13 @@ public class TemaController : ControllerBase
         _temaValidator = temaValidator;
     }
     
-    [HttpGet("temas")]
+    [HttpGet]
     public async Task<ActionResult> GetAll()
     {
         return Ok(await _temaService.GetAll());
     }
     
-    [HttpGet("tema/id/{id}")]
+    [HttpGet("id/{id}")]
     public async Task<ActionResult> GetById(long id)
     {
         var tema = await _temaService.GetById(id);
@@ -33,13 +35,13 @@ public class TemaController : ControllerBase
         return Ok(tema);
     }
     
-    [HttpGet("tema/descricao/{descricao}")]
+    [HttpGet("descricao/{descricao}")]
     public async Task<ActionResult> GetByDescricao(string descricao)
     {
         return Ok(await _temaService.GetByDescricao(descricao));
     }
 
-    [HttpPost("temas")]
+    [HttpPost]
     public async Task<ActionResult> Create([FromBody] Tema tema)
     {
         var validationResult = await _temaValidator.ValidateAsync(tema);
@@ -51,7 +53,7 @@ public class TemaController : ControllerBase
         return CreatedAtAction(nameof(GetById), new {id = tema.Id}, tema);
     }
 
-    [HttpPut("temas")]
+    [HttpPut]
     public async Task<ActionResult> Update([FromBody] Tema tema)
     {
         if (tema.Id <= 0)
@@ -70,7 +72,7 @@ public class TemaController : ControllerBase
         return Ok(temaUpdate);
     }
     
-    [HttpDelete("tema/{id}")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> Delete(long id)
     {
         var tema = await _temaService.GetById(id);
