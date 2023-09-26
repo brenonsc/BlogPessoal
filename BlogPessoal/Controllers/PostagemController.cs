@@ -51,8 +51,12 @@ public class PostagemController : ControllerBase
         
         if (!validationResult.IsValid)
             return BadRequest(validationResult.Errors);
+
+        var resposta = await _postagemService.Create(postagem);
         
-        await _postagemService.Create(postagem);
+        if (resposta == null)
+            return BadRequest("Tema não encontrado");
+        
         return CreatedAtAction(nameof(GetById), new {id = postagem.Id}, postagem);
     }
 
@@ -70,7 +74,7 @@ public class PostagemController : ControllerBase
         var postagemUpdate = await _postagemService.Update(postagem);
         
         if (postagemUpdate == null)
-            return NotFound("Postagem não encontrada");
+            return NotFound("Postagem e/ou tema não encontrado(s)");
         
         return Ok(postagemUpdate);
     }

@@ -12,4 +12,7 @@ public class Tema
     [Column(TypeName = "varchar")]
     [StringLength(255)]
     public string Descricao { get; set; } = string.Empty;
+    
+    [InverseProperty("Tema")]
+    public virtual ICollection<Postagem>? Postagem { get; set; } = new List<Postagem>();
 }

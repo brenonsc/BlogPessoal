@@ -15,14 +15,18 @@ public class TemaService : ITemaService
     
     public async Task<IEnumerable<Tema>> GetAll()
     {
-        return await _context.Temas.ToListAsync();
+        return await _context.Temas
+            .Include(t => t.Postagem)
+            .ToListAsync();
     }
 
     public async Task<Tema?> GetById(long id)
     {
         try
         {
-            var tema = await _context.Temas.FirstAsync(i => i.Id == id);
+            var tema = await _context.Temas
+                .Include(t => t.Postagem)
+                .FirstAsync(i => i.Id == id);
             return tema;
         }
         catch
@@ -33,7 +37,9 @@ public class TemaService : ITemaService
 
     public async Task<IEnumerable<Tema>> GetByDescricao(string descricao)
     {
-        var tema = await _context.Temas.Where(t => t.Descricao.Contains(descricao)).ToListAsync();
+        var tema = await _context.Temas
+            .Include(t => t.Postagem)
+            .Where(t => t.Descricao.Contains(descricao)).ToListAsync();
         return tema;
     }
 

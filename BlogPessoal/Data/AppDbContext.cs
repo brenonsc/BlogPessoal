@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using BlogPessoal.Model;
 using Microsoft.EntityFrameworkCore;
 namespace BlogPessoal.Data;
@@ -13,6 +14,12 @@ public class AppDbContext: DbContext
     {
         modelBuilder.Entity<Postagem>().ToTable("tb_postagens");
         modelBuilder.Entity<Tema>().ToTable("tb_temas");
+
+        _ = modelBuilder.Entity<Postagem>()
+            .HasOne(_ => _.Tema)
+            .WithMany(t => t!.Postagem)
+            .HasForeignKey("TemaId")
+            .OnDelete(DeleteBehavior.Cascade);
     }
     
     //Registrar um DbSet para cada entidade - Objeto responsável por manipular as tabelas

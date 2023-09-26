@@ -16,4 +16,6 @@ public class Postagem : Auditable
     [Column(TypeName = "varchar")]
     [StringLength(1000)]
     public string Texto { get; set; } = string.Empty;
+    
+    public virtual Tema? Tema { get; set; }
 }

@@ -24,7 +24,7 @@ public class TemaController : ControllerBase
         return Ok(await _temaService.GetAll());
     }
     
-    [HttpGet("id/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetById(long id)
     {
         var tema = await _temaService.GetById(id);
