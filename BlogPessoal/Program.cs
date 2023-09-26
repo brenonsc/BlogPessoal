@@ -23,9 +23,11 @@ public class Program
         
         //Registrar validação das entidades
         builder.Services.AddTransient<IValidator<Postagem>, PostagemValidator>();
+        builder.Services.AddTransient<IValidator<Tema>, TemaValidator>();
         
         //Registrar as classes de serviço
         builder.Services.AddScoped<IPostagemService, PostagemService>();
+        builder.Services.AddScoped<ITemaService, TemaService>();
         
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
