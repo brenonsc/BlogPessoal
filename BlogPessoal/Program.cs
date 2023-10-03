@@ -1,10 +1,15 @@
-﻿using BlogPessoal.Data;
+﻿using System.Text;
+using BlogPessoal.Data;
 using BlogPessoal.Model;
+using BlogPessoal.Security;
+using BlogPessoal.Security.Implements;
 using BlogPessoal.Service;
 using BlogPessoal.Service.Implements;
 using BlogPessoal.Validator;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlogPessoal;
 
@@ -28,10 +33,31 @@ public class Program
         //Registrar validação das entidades
         builder.Services.AddTransient<IValidator<Postagem>, PostagemValidator>();
         builder.Services.AddTransient<IValidator<Tema>, TemaValidator>();
+        builder.Services.AddTransient<IValidator<User>, UserValidator>();
         
         //Registrar as classes de serviço
         builder.Services.AddScoped<IPostagemService, PostagemService>();
         builder.Services.AddScoped<ITemaService, TemaService>();
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
+
+        builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            var key = Encoding.UTF8.GetBytes(Settings.Secret);
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+        });
         
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
@@ -66,6 +92,9 @@ public class Program
         }
 
         app.UseCors("MyPolicy");
+
+        app.UseAuthentication();
+        
         app.UseAuthorization();
         
         app.MapControllers();

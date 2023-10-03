@@ -18,6 +18,7 @@ public class PostagemService : IPostagemService
     {
         return await _context.Postagens
             .Include(p => p.Tema)
+            .Include(p => p.Usuario)
             .ToListAsync();
     }
 
@@ -27,6 +28,7 @@ public class PostagemService : IPostagemService
         {
             var postagem = await _context.Postagens
                 .Include(p => p.Tema)
+                .Include(p => p.Usuario)
                 .FirstAsync(i => i.Id == id);
             return postagem;
         }
@@ -40,6 +42,7 @@ public class PostagemService : IPostagemService
     {
         var postagem = await _context.Postagens
             .Include(p => p.Tema)
+            .Include(p => p.Usuario)
             .Where(t => t.Titulo.Contains(titulo)).ToListAsync();
         return postagem;
     }
@@ -55,6 +58,7 @@ public class PostagemService : IPostagemService
         }
         
         postagem.Tema = postagem.Tema is not null ? _context.Temas.FirstOrDefault(t => t.Id == postagem.Tema.Id) : null;
+        postagem.Usuario = postagem.Usuario is not null ? await _context.Users.FirstOrDefaultAsync(u => u.Id == postagem.Usuario.Id) : null;
         
         await _context.Postagens.AddAsync(postagem);
         await _context.SaveChangesAsync();
@@ -78,6 +82,7 @@ public class PostagemService : IPostagemService
         }
         
         postagem.Tema = postagem.Tema is not null ? _context.Temas.FirstOrDefault(t => t.Id == postagem.Tema.Id) : null;
+        postagem.Usuario = postagem.Usuario is not null ? await _context.Users.FirstOrDefaultAsync(u => u.Id == postagem.Usuario.Id) : null;
         
         _context.Entry(postagemUpdate).State = EntityState.Detached;
         _context.Entry(postagem).State = EntityState.Modified;
