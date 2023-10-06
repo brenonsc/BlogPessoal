@@ -141,4 +141,33 @@ public class UserControllerTest : IClassFixture<WebAppFactory>
         
         respostaPut.StatusCode.Should().Be(HttpStatusCode.OK);
     }
+    
+    [Fact, Order(6)]
+    public async Task DeveListarUmUsuario()
+    {
+        _client.SetFakeBearerToken((object) token);
+        
+        Id = "1";
+        
+        var resposta = await _client.GetAsync($"/usuarios/{Id}");
+
+        resposta.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Fact, Order(7)]
+    public async Task DeveAutenticarUmUsuario()
+    {
+        var novoUsuario = new Dictionary<string, string>()
+        {
+            { "usuario", "joao@email.com" },
+            { "senha", "12345678" }
+        };
+
+        var usuarioJson = JsonConvert.SerializeObject(novoUsuario);
+        var corpoRequisicao = new StringContent(usuarioJson, Encoding.UTF8, "application/json");
+
+        var resposta = await _client.PostAsync("/usuarios/logar", corpoRequisicao);
+
+        resposta.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 }
