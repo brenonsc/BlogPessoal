@@ -46,7 +46,7 @@ public class AppDbContext: DbContext
             //Se uma propriedade da Classe Auditable estiver sendo criada. 
             if (insertedEntry is Auditable auditableEntity)
             {
-                auditableEntity.Data = new DateTimeOffset(DateTime.UtcNow);
+                auditableEntity.Data = DateTimeOffset.Now;
             }
         }
 
@@ -59,7 +59,7 @@ public class AppDbContext: DbContext
             //Se uma propriedade da Classe Auditable estiver sendo atualizada.  
             if (modifiedEntry is Auditable auditableEntity)
             {
-                auditableEntity.Data = new DateTimeOffset(DateTime.UtcNow);
+                auditableEntity.Data = DateTimeOffset.Now;
             }
         }
 
