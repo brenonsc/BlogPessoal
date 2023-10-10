@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.ComTypes;
+using BlogPessoal.Configuration;
 using BlogPessoal.Model;
 using Microsoft.EntityFrameworkCore;
 namespace BlogPessoal.Data;
@@ -63,5 +64,13 @@ public class AppDbContext: DbContext
         }
 
         return base.SaveChangesAsync(cancellationToken);
+    }
+    
+    // Ajusta a Data para o formato UTC - Compatível com qualquer Banco de dados Relacional
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder
+            .Properties<DateTimeOffset>()
+            .HaveConversion<DateTimeOffsetConverter>();
     }
 }

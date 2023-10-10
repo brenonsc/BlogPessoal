@@ -17,6 +17,7 @@ public class PostagemService : IPostagemService
     public async Task<IEnumerable<Postagem>> GetAll()
     {
         return await _context.Postagens
+            .AsNoTracking()
             .Include(p => p.Tema)
             .Include(p => p.Usuario)
             .ToListAsync();
@@ -41,9 +42,13 @@ public class PostagemService : IPostagemService
     public async Task<IEnumerable<Postagem>> GetByTitulo(string titulo)
     {
         var postagem = await _context.Postagens
+            .AsNoTracking()
             .Include(p => p.Tema)
             .Include(p => p.Usuario)
-            .Where(t => t.Titulo.Contains(titulo)).ToListAsync();
+            .Where(p => p.Titulo.ToUpper()
+                .Contains(titulo.ToUpper())
+            )
+            .ToListAsync();
         return postagem;
     }
 
